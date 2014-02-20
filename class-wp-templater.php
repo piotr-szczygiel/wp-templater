@@ -1,19 +1,30 @@
 <?php
-// Please note that it's recommended to use the namespaces in your plugins.
-// namespace YourCompanyName\PluginNameOrSomething;
+namespace PiotrSzczygiel\WordPressPluginsTools\YourPluginName;
 
 /**
  * This class will help you handling the templates in your WP extensions and finally
  * you will get rid of HTML markup from PHP code :)
+ * When using, it's recommended to override current namespace, to make the class
+ * unique in all your plugins, f.e you can set the namespace as:
+ * PiotrSzczygiel\WordPressPluginsTools\YourPluginName;
  *
  * @author Piotr Szczygiel <psz.szczygiel@gmail.com>
  * @link https://github.com/piotr-szczygiel/wp-templater - check out latest version
  * @license MIT
- * @version 1.0
+ * @version 1.0.1
  */
 class wp_templater
 {
+    /**
+     * Property contains an instance of the object
+     * @var wp_templater
+     */
     private static $instance = null;
+
+    /**
+     * Path to the plugin directory
+     * @var string
+     */
     private static $plugin_path = null;
 
     /**
@@ -68,14 +79,15 @@ class wp_templater
      * Method renders the template
      * @param string $template_name
      * @param array $args
+     * @param string $templates_dir
      */
-    public function render( $template_name, $args = array() )
+    public function render( $template_name, $args = array(), $templates_dir = 'templates' )
     {
         foreach( $args as $id => $value ) {
             $$id = $value;
         }
 
-        $path = self::$plugin_path . 'templates/' . $template_name . '.php';
+        $path = self::$plugin_path . $templates_dir . '/' . $template_name . '.php';
         self::check_template_path( $path );
         require( $path );
     }
